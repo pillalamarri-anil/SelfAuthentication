@@ -15,6 +15,8 @@ public class UserDTO {
     private List<String> roles;
 
     public static UserDTO from(User user) {
+        if(user == null) return null;
+
         UserDTO userDTO = new UserDTO();
         userDTO.setEmail(user.getEmail());
         userDTO.setUsername(user.getName());

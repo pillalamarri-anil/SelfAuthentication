@@ -4,6 +4,9 @@ import dev.anil.selfauthentication.DTO.SignInRequestDTO;
 import dev.anil.selfauthentication.DTO.SignUpRequestDTO;
 import dev.anil.selfauthentication.DTO.TokenDTO;
 import dev.anil.selfauthentication.DTO.UserDTO;
+import dev.anil.selfauthentication.Exceptions.InvalidCredentialsException;
+import dev.anil.selfauthentication.Exceptions.InvalidTokenException;
+import dev.anil.selfauthentication.Models.Token;
 import dev.anil.selfauthentication.Models.User;
 import dev.anil.selfauthentication.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,19 +30,23 @@ public class AuthenticationController {
         return UserDTO.from(user);
     }
 
-    @PostMapping("/singIn")
-    public TokenDTO signIn(@RequestBody SignInRequestDTO requestDTO) {
-        return new TokenDTO();
+    @PostMapping("/signin")
+    public TokenDTO signIn(@RequestBody SignInRequestDTO requestDTO) throws InvalidCredentialsException {
+
+        Token token = userService.login(requestDTO.getEmail(), requestDTO.getPassword());
+        return TokenDTO.from(token);
     }
 
     @GetMapping("/validate/{token}")
-    public UserDTO validate(@PathVariable String token) {
-        return new UserDTO();
+    public UserDTO validate(@PathVariable String token) throws InvalidCredentialsException, InvalidTokenException {
+
+        User user = userService.validate(token);
+        return UserDTO.from(user);
     }
 
-    @PutMapping("/logout/{email}")
-    public void logOut(@PathVariable String email) {
-
+    @PutMapping("/logout/{token}")
+    public void logOut(@PathVariable String token) {
+        userService.logout(token);
     }
 
 
