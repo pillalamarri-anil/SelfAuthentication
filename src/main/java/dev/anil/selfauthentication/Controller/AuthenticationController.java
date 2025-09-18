@@ -9,6 +9,7 @@ import dev.anil.selfauthentication.Exceptions.InvalidTokenException;
 import dev.anil.selfauthentication.Models.Token;
 import dev.anil.selfauthentication.Models.User;
 import dev.anil.selfauthentication.Service.UserService;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,17 +32,15 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signin")
-    public TokenDTO signIn(@RequestBody SignInRequestDTO requestDTO) throws InvalidCredentialsException {
+    public String signIn(@RequestBody SignInRequestDTO requestDTO) throws InvalidCredentialsException {
 
-        Token token = userService.login(requestDTO.getEmail(), requestDTO.getPassword());
-        return TokenDTO.from(token);
+        return userService.login(requestDTO.getEmail(), requestDTO.getPassword());
     }
 
     @GetMapping("/validate/{token}")
-    public UserDTO validate(@PathVariable String token) throws InvalidCredentialsException, InvalidTokenException {
+    public Claims validate(@PathVariable String token) throws InvalidCredentialsException, InvalidTokenException {
 
-        User user = userService.validate(token);
-        return UserDTO.from(user);
+        return userService.validate(token);
     }
 
     @PutMapping("/logout/{token}")
