@@ -18,15 +18,15 @@ public class bcryptEncoderConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
-
-        httpSecurity.csrf().disable();
-        httpSecurity.cors().disable();
-        httpSecurity.authorizeHttpRequests(authorizeRequests ->
-        authorizeRequests.anyRequest().permitAll());
-        return httpSecurity.build();
-    }
+//    @Bean
+//    public SecurityFilterChain configure(HttpSecurity httpSecurity) throws Exception {
+//
+//        httpSecurity.csrf().disable();
+//        httpSecurity.cors().disable();
+//        httpSecurity.authorizeHttpRequests(authorizeRequests ->
+//        authorizeRequests.anyRequest().permitAll());
+//        return httpSecurity.build();
+//    }
 
     @Bean
     public SecretKey getSecretKey() {
