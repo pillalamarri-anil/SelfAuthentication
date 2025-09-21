@@ -62,6 +62,8 @@ public class SecurityConfig {
 			)
 			.authorizeHttpRequests((authorize) ->
 				authorize
+						.requestMatchers("/users/signup").permitAll()
+						.requestMatchers("/users/signin").permitAll()
 					.anyRequest().authenticated()
 			)
 			// Redirect to the login page when not authenticated from the
@@ -82,8 +84,14 @@ public class SecurityConfig {
 			throws Exception {
 		http
 			.authorizeHttpRequests((authorize) -> authorize
+					.requestMatchers("/users/signup").permitAll()
+					.requestMatchers("/users/signin").permitAll()
 				.anyRequest().authenticated()
 			)
+				.csrf( csrf -> csrf.ignoringRequestMatchers("/users/signup"))
+				.csrf( csrf -> csrf.ignoringRequestMatchers("/users/signin"))
+				.cors(cors -> cors.disable())
+
 			// Form login handles the redirect to the login page from the
 			// authorization server filter chain
 			.formLogin(Customizer.withDefaults());
@@ -91,16 +99,16 @@ public class SecurityConfig {
 		return http.build();
 	}
 
-	@Bean
-	public UserDetailsService userDetailsService() {
-		UserDetails userDetails = User.builder()
-				.username("user")
-				.password(bCryptPasswordEncoder.encode("password"))
-				.roles("USER")
-				.build();
-
-		return new InMemoryUserDetailsManager(userDetails);
-	}
+//	@Bean
+//	public UserDetailsService userDetailsService() {
+//		UserDetails userDetails = User.builder()
+//				.username("user")
+//				.password(bCryptPasswordEncoder.encode("password"))
+//				.roles("USER")
+//				.build();
+//
+//		return new InMemoryUserDetailsManager(userDetails);
+//	}
 
 	@Bean
 	public RegisteredClientRepository registeredClientRepository() {

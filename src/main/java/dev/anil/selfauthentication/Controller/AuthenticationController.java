@@ -27,6 +27,7 @@ public class AuthenticationController {
     @PostMapping("/signup")
     public UserDTO signUp(@RequestBody SignUpRequestDTO requestDTO) {
 
+        System.out.println("SignUp request: " + requestDTO);
         User user = userService.signUp(requestDTO.getUsername(), requestDTO.getEmail(), requestDTO.getPassword());
         return UserDTO.from(user);
     }
